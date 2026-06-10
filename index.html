@@ -2,130 +2,38 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>安全离线二维码生成器</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>安全离线二维码生成器</title>
 <style>
-body{
-  margin:0;
-  padding:24px;
-  background:#f5f7fa;
-  color:#222;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",Arial,sans-serif;
-}
-.wrap{
-  max-width:900px;
-  margin:0 auto;
-  background:#fff;
-  border-radius:16px;
-  padding:24px;
-  box-shadow:0 10px 30px rgba(0,0,0,.08);
-}
-h1{
-  margin:0 0 16px;
-  font-size:24px;
-}
-textarea{
-  width:100%;
-  min-height:180px;
-  resize:vertical;
-  box-sizing:border-box;
-  padding:12px;
-  font-size:15px;
-  line-height:1.6;
-  border:1px solid #ccc;
-  border-radius:10px;
-  outline:none;
-}
-textarea:focus{
-  border-color:#1677ff;
-}
-.row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  align-items:center;
-  margin-top:14px;
-}
-button{
-  border:0;
-  background:#1677ff;
-  color:white;
-  padding:10px 16px;
-  border-radius:8px;
-  cursor:pointer;
-  font-size:14px;
-}
-button:hover{
-  background:#0958d9;
-}
-button.gray{
-  background:#555;
-}
-button.gray:hover{
-  background:#333;
-}
-select,input{
-  padding:8px 10px;
-  border:1px solid #ccc;
-  border-radius:8px;
-  background:#fff;
-}
-.info{
-  margin-top:12px;
-  color:#555;
-  font-size:14px;
-  line-height:1.8;
-}
-.err{
-  margin-top:12px;
-  color:#cf1322;
-  font-size:14px;
-  line-height:1.8;
-  white-space:pre-wrap;
-}
-.qrbox{
-  margin-top:22px;
-  text-align:center;
-  overflow:auto;
-}
-#qrcode{
-  display:inline-block;
-  background:white;
-  padding:16px;
-  border:1px solid #ddd;
-  border-radius:12px;
-}
-.tip{
-  margin-top:18px;
-  padding:12px;
-  background:#fafafa;
-  border:1px solid #eee;
-  border-radius:10px;
-  color:#666;
-  font-size:14px;
-  line-height:1.8;
-}
-code{
-  background:#f1f1f1;
-  padding:2px 5px;
-  border-radius:4px;
-}
+body{margin:0;padding:24px;background:#f5f7fa;color:#222;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",Arial,sans-serif;}
+.wrap{max-width:900px;margin:0 auto;background:#fff;border-radius:16px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.08);}
+h1{margin:0 0 16px;font-size:24px;}
+textarea{width:100%;min-height:180px;resize:vertical;box-sizing:border-box;padding:12px;font-size:15px;line-height:1.6;border:1px solid #ccc;border-radius:10px;outline:none;}
+textarea:focus{border-color:#1677ff;}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px;}
+button{border:0;background:#1677ff;color:white;padding:10px 16px;border-radius:8px;cursor:pointer;font-size:14px;}
+button:hover{background:#0958d9;}
+button.gray{background:#555;}
+button.gray:hover{background:#333;}
+select,input{padding:8px 10px;border:1px solid #ccc;border-radius:8px;background:#fff;}
+.info{margin-top:12px;color:#555;font-size:14px;line-height:1.8;}
+.err{margin-top:12px;color:#cf1322;font-size:14px;line-height:1.8;white-space:pre-wrap;}
+.qrbox{margin-top:22px;text-align:center;overflow:auto;}
+#qrcode{display:inline-block;background:white;padding:16px;border:1px solid #ddd;border-radius:12px;}
+.tip{margin-top:18px;padding:12px;background:#fafafa;border:1px solid #eee;border-radius:10px;color:#666;font-size:14px;line-height:1.8;}
+code{background:#f1f1f1;padding:2px 5px;border-radius:4px;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>安全离线二维码生成器</h1>
-
   <textarea id="text">https://www.baidu.com</textarea>
-
   <div class="row">
     <button onclick="generate()">生成二维码</button>
     <button onclick="downloadSvg()">下载 SVG</button>
     <button onclick="downloadPng()">下载 PNG</button>
     <button class="gray" onclick="clearAll()">清空</button>
-
-    <label>
-      纠错等级：
+    <label>纠错等级：
       <select id="ecl">
         <option value="L">L，容量最大</option>
         <option value="M" selected>M，推荐</option>
@@ -133,40 +41,23 @@ code{
         <option value="H">H，最强</option>
       </select>
     </label>
-
-    <label>
-      图片尺寸：
+    <label>图片尺寸：
       <input id="sizePx" type="number" value="360" min="120" max="2000" step="20">
     </label>
   </div>
-
   <div id="info" class="info"></div>
   <div id="err" class="err"></div>
-
-  <div class="qrbox">
-    <div id="qrcode"></div>
-  </div>
-
+  <div class="qrbox"><div id="qrcode"></div></div>
   <div class="tip">
-    这是完整单文件离线版，不联网，不使用 CDN，不需要任何外部 JS 文件。<br>
-    建议先用 <code>https://www.baidu.com</code> 或 <code>hello</code> 测试，正常应可直接识别。<br>
-    如果内容很长，可以把纠错等级调成 <code>L</code>。
+    单文件离线版：不联网、不使用 CDN、不上传输入内容。<br>
+    建议先用 <code>https://www.baidu.com</code> 或 <code>hello</code> 测试。内容很长时可把纠错等级调成 <code>L</code>。
   </div>
 </div>
-
 <script>
+
 "use strict";
 
-/*
-  完整离线 QR Code 生成器
-  - QR Code Model 2
-  - Version 1-40
-  - ECL L/M/Q/H
-  - Byte mode UTF-8
-  - Reed-Solomon ECC
-  - 自动 mask
-  - 输出 SVG/PNG
-*/
+/* Offline QR Code generator. */
 
 const ECL_MAP = {
   L: { ordinal:0, formatBits:1, name:"L" },
@@ -219,7 +110,7 @@ function utf8Bytes(str) {
 
 function appendBits(val, len, arr) {
   if (len < 0 || len > 31 || val >>> len !== 0) {
-    throw new Error("appendBits 鍙傛暟閿欒");
+    throw new Error("QR internal error.");
   }
   for (let i = len - 1; i >= 0; i--) {
     arr.push((val >>> i) & 1);
@@ -301,7 +192,7 @@ function makeDataCodewords(bytes, ver, ecl) {
 
 function reedSolomonMultiply(x, y) {
   if (x >>> 8 !== 0 || y >>> 8 !== 0) {
-    throw new Error("GF 鍙傛暟閿欒");
+    throw new Error("QR internal error.");
   }
 
   let z = 0;
@@ -314,7 +205,7 @@ function reedSolomonMultiply(x, y) {
 
 function reedSolomonComputeDivisor(degree) {
   if (degree < 1 || degree > 255) {
-    throw new Error("RS degree 閿欒");
+    throw new Error("QR internal error.");
   }
 
   const result = new Array(degree).fill(0);
@@ -386,7 +277,7 @@ function addEccAndInterleave(data, ver, ecl) {
   }
 
   if (result.length !== rawCodewords) {
-    throw new Error("鍐呴儴閿欒锛氱爜瀛楁暟閲忎笉鍖归厤");
+    throw new Error("QR internal error.");
   }
 
   return result;
@@ -572,7 +463,7 @@ QrMatrix.prototype.applyMask = function(mask) {
           case 5: invert = (x * y) % 2 + (x * y) % 3 === 0; break;
           case 6: invert = ((x * y) % 2 + (x * y) % 3) % 2 === 0; break;
           case 7: invert = ((x + y) % 2 + (x * y) % 3) % 2 === 0; break;
-          default: throw new Error("Mask 閿欒");
+          throw new Error("QR internal error.");
         }
 
         this.modules[y][x] ^= invert;
@@ -727,7 +618,7 @@ function encodeQr(text, eclName) {
 
   const ver = chooseVersion(bytes, ecl);
   if (ver === null) {
-    throw new Error("内容太长，超过 QR Code Version 40 的容量。请减少内容，或者把纠错等级调成 L。");
+    throw new Error("内容太长，超过 QR Code Version 40 的容量。请减少内容，或把纠错等级调成 L。");
   }
 
   const dataCodewords = makeDataCodewords(bytes, ver, ecl);
@@ -808,10 +699,8 @@ function generate() {
   try {
     const qr = encodeQr(text, eclName);
     const svg = qrToSvg(qr, pixelSize);
-
     qrcodeEl.innerHTML = svg;
     lastSvg = svg;
-
     infoEl.innerHTML =
       "UTF-8 字节数：<b>" + qr.bytes + "</b><br>" +
       "二维码版本：<b>" + qr.version + "</b><br>" +
@@ -837,15 +726,12 @@ function downloadSvg() {
     alert("请先生成二维码。");
     return;
   }
-
   const blob = new Blob([lastSvg], { type: "image/svg+xml;charset=utf-8" });
   const url = URL.createObjectURL(blob);
-
   const a = document.createElement("a");
   a.href = url;
   a.download = "qrcode.svg";
   a.click();
-
   URL.revokeObjectURL(url);
 }
 
@@ -854,45 +740,38 @@ function downloadPng() {
     alert("请先生成二维码。");
     return;
   }
-
   const size = Math.max(120, Math.min(2000, parseInt(sizePxEl.value || "360", 10)));
-
   const blob = new Blob([lastSvg], { type: "image/svg+xml;charset=utf-8" });
   const url = URL.createObjectURL(blob);
-
   const img = new Image();
-
   img.onload = function() {
     const canvas = document.createElement("canvas");
     canvas.width = size;
     canvas.height = size;
-
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = "#fff";
     ctx.fillRect(0, 0, size, size);
     ctx.drawImage(img, 0, 0, size, size);
-
     URL.revokeObjectURL(url);
-
     const a = document.createElement("a");
     a.href = canvas.toDataURL("image/png");
     a.download = "qrcode.png";
     a.click();
   };
-
   img.onerror = function() {
     URL.revokeObjectURL(url);
     alert("PNG 导出失败，可以先下载 SVG。");
   };
-
   img.src = url;
 }
+
+
 
 textEl.addEventListener("input", generate);
 eclEl.addEventListener("change", generate);
 sizePxEl.addEventListener("change", generate);
+window.addEventListener("load", generate);
 
-window.onload = generate;
 </script>
 </body>
 </html>
